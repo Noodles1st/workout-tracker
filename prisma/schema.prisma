@@ -50,6 +50,8 @@ model WorkoutPlan {
   dayOfWeek   String
   workoutName String
   isRestDay   Boolean  @default(false)
+
+  @@unique([userId,dayOfWeek])
 }
 
 model WorkoutSession {

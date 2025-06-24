@@ -9,11 +9,6 @@ export class UserService {
   async users() {
     return this.prisma.user.findMany();
   }
-
-  async getWorkoutPlan() {
-    return this.prisma.workoutPlan.findMany();
-  }
-
   async user(userWhereUniqueInput: Prisma.UserWhereUniqueInput) {
     return this.prisma.user.findUnique({
       where: userWhereUniqueInput,

@@ -7,10 +7,6 @@ export class UserController {
   getAllUsers() {
     return this.userService.users();
   }
-  @Get('plan')
-  getWorkoutPlan() {
-    return this.userService.getWorkoutPlan();
-  }
 
   @Get(':id')
   getUserById(@Param('id') id: string) {
