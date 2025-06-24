@@ -1,11 +1,19 @@
-import { Controller, Get } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { Controller, Get, Param } from '@nestjs/common';
 import { UserService } from './user.service';
-@Controller()
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
   @Get()
-  findMany() {
-    return this.userService.findAll();
+  getAllUsers() {
+    return this.userService.users();
+  }
+  @Get('plan')
+  getWorkoutPlan() {
+    return this.userService.getWorkoutPlan();
+  }
+
+  @Get(':id')
+  getUserById(@Param('id') id: string) {
+    return this.userService.user({ id: Number(id) });
   }
 }
