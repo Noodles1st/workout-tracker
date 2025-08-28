@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { PlansService } from './plans.service';
 import { WeeklyPlanDto } from './dto/weekly-plan.dto';
+import { UpdatePlanDTO } from './dto/update-plan-dto';
 
 @Controller('plans')
 export class PlansController {
@@ -9,13 +10,18 @@ export class PlansController {
   getWorkoutPlan() {
     return this.plansService.getWorkoutPlan();
   }
-  @Get(':id')
-  getPlanById(@Param('id') id: string) {
-    return this.plansService.getPlanById(Number(id));
+  @Get('user/:id')
+  getPlanByUserId(@Param('id') id: string) {
+    return this.plansService.getPlanByUserId(Number(id));
   }
 
   @Post('weekly')
-  updatePlanByUser(@Body() body: WeeklyPlanDto) {
-    return this.plansService.updatePlan(body);
+  createPlanByUser(@Body() body: WeeklyPlanDto) {
+    return this.plansService.createPlan(body);
+  }
+
+  @Patch(':id')
+  updatePlan(@Param('id') planId: string, @Body() body: UpdatePlanDTO) {
+    return this.plansService.updatePlan(Number(planId), body);
   }
 }

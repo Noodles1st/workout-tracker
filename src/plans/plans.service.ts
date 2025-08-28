@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, WorkoutPlan } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { WeeklyPlanDto } from './dto/weekly-plan.dto';
+import { UpdatePlanDTO } from './dto/update-plan-dto';
 
 @Injectable()
 export class PlansService {
@@ -11,7 +12,7 @@ export class PlansService {
     return this.prisma.workoutPlan.findMany();
   }
 
-  async getPlanById(userId: number) {
+  async getPlanByUserId(userId: number) {
     return this.prisma.workoutPlan.findMany({
       where: {
         userId: userId,
@@ -19,7 +20,7 @@ export class PlansService {
     });
   }
 
-  async updatePlan(body: WeeklyPlanDto) {
+  async createPlan(body: WeeklyPlanDto) {
     const { userId, plans } = body;
     const results: WorkoutPlan[] = [];
 
@@ -45,5 +46,12 @@ export class PlansService {
       results.push(result);
     }
     return results;
+  }
+
+  async updatePlan(planId: number, body: UpdatePlanDTO) {
+    return this.prisma.workoutPlan.update({
+      where: { id: planId },
+      data: body,
+    });
   }
 }
