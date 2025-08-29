@@ -14,4 +14,12 @@ export class UserService {
       where: userWhereUniqueInput,
     });
   }
+
+  async getPlanByUserId(userId: number) {
+    return this.prisma.workoutPlan.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+  }
 }

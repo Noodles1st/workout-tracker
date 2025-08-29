@@ -12,13 +12,7 @@ export class PlansService {
     return this.prisma.workoutPlan.findMany();
   }
 
-  async getPlanByUserId(userId: number) {
-    return this.prisma.workoutPlan.findMany({
-      where: {
-        userId: userId,
-      },
-    });
-  }
+  
 
   async createPlan(body: WeeklyPlanDto) {
     const { userId, plans } = body;
@@ -53,5 +47,11 @@ export class PlansService {
       where: { id: planId },
       data: body,
     });
+  }
+
+  async deletePlan(planId: number) {
+    return this.prisma.workoutPlan.delete({
+      where: {id : planId}
+    })
   }
 }

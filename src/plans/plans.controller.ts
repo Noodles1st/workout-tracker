@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { PlansService } from './plans.service';
 import { WeeklyPlanDto } from './dto/weekly-plan.dto';
 import { UpdatePlanDTO } from './dto/update-plan-dto';
@@ -10,10 +10,6 @@ export class PlansController {
   getWorkoutPlan() {
     return this.plansService.getWorkoutPlan();
   }
-  @Get('user/:id')
-  getPlanByUserId(@Param('id') id: string) {
-    return this.plansService.getPlanByUserId(Number(id));
-  }
 
   @Post('weekly')
   createPlanByUser(@Body() body: WeeklyPlanDto) {
@@ -23,5 +19,10 @@ export class PlansController {
   @Patch(':id')
   updatePlan(@Param('id') planId: string, @Body() body: UpdatePlanDTO) {
     return this.plansService.updatePlan(Number(planId), body);
+  }
+
+  @Delete(':id')
+  deletePlan(@Param('id') planId: string) {
+    return this.plansService.deletePlan(Number(planId))
   }
 }

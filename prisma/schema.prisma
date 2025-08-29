@@ -85,4 +85,6 @@ model PersonalBest {
   exerciseId  Int
   weight      Float
   date        DateTime
+
+  @@unique([userId, exerciseId])
 }

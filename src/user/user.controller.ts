@@ -12,4 +12,9 @@ export class UserController {
   getUserById(@Param('id') id: string) {
     return this.userService.user({ id: Number(id) });
   }
+
+  @Get(':id/plans')
+  getPlansByUser(@Param('id') id: string) {
+    return this.userService.getPlanByUserId(Number(id));
+  }
 }
