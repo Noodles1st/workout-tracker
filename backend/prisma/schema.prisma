@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String?   @unique
+  createdAt DateTime  @default(now())
+
+  workoutPlans      WorkoutPlan[]
+  workoutSessions   WorkoutSession[]
+  bodyWeightLogs    BodyWeightLog[]
+  personalBests     PersonalBest[]
+}
+
+model BodyWeightLog {
+  id       Int      @id @default(autoincrement())
+  user     User     @relation(fields: [userId], references: [id])
+  userId   Int
+  date     DateTime
+  weight   Float
+}
+
+model Exercise {
+  id              Int                  @id @default(autoincrement())
+  name            String
+  category        String?
+  isCompoundLift  Boolean              @default(false)
+  entries         WorkoutExerciseEntry[]
+  personalBests   PersonalBest[]
+}
+
+model WorkoutPlan {
+  id          Int      @id @default(autoincrement())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+  dayOfWeek   String
+  workoutName String
+  isRestDay   Boolean  @default(false)
+
+  @@unique([userId,dayOfWeek])
+}
+
+model WorkoutSession {
+  id        Int       @id @default(autoincrement())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int
+  date      DateTime
+  notes     String?
+  duration  Int?
+
+  entries   WorkoutExerciseEntry[]
+}
+
+model WorkoutExerciseEntry {
+  id            Int       @id @default(autoincrement())
+  session       WorkoutSession @relation(fields: [sessionId], references: [id])
+  sessionId     Int
+  exercise      Exercise  @relation(fields: [exerciseId], references: [id])
+  exerciseId    Int
+  sets          Int
+  reps          Int
+  weight        Float
+  rpe           Int
+}
+
+model PersonalBest {
+  id          Int      @id @default(autoincrement())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+  exercise    Exercise @relation(fields: [exerciseId], references: [id])
+  exerciseId  Int
+  weight      Float
+  date        DateTime
+
+  @@unique([userId, exerciseId])
+}
